@@ -1,0 +1,81 @@
+@model Blog
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<article class="blog-post">
+    <h1 class="mb-3">@Model.Title</h1>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <span class="bi bi-person-circle me-2" style="font-size: 1.5rem;"></span>
+            <div>
+                <p class="mb-0">@Model.User.Username</p>
+                <small class="text-muted">@Model.CreatedAt.ToString("MMMM dd, yyyy")</small>
+            </div>
+        </div>
+        
+        <div>
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.Identity.Name == Model.User.Username))
+            {
+                <a href="/Blog/Edit/@Model.Id" class="btn btn-sm btn-outline-secondary me-2">Редактировать</a>
+                <form action="/Blog/Delete/@Model.Id" method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите удалить этот блог?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                </form>
+            }
+        </div>
+    </div>
+    
+    <div class="blog-content mb-5">
+        <p>@Model.Content</p>
+    </div>
+    
+    <div class="d-flex align-items-center mb-4">
+        <form action="/Blog/Like/@Model.Id" method="post" class="me-3">
+            <button type="submit" class="btn btn-outline-danger">
+                <i class="bi @(Model.Likes.Any(l => l.User.Username == User.Identity.Name) ? "bi-heart-fill" : "bi-heart")"></i>
+                Нравится (@Model.Likes.Count)
+            </button>
+        </form>
+    </div>
+    
+    <hr>
+    
+    <h4 class="mb-4">Комментарии (@Model.Comments.Count)</h4>
+    
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form action="/Comment/Add" method="post" class="mb-5">
+            <input type="hidden" name="blogId" value="@Model.Id">
+            <div class="mb-3">
+                <textarea class="form-control" name="text" rows="3" placeholder="Добавить комментарий..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+        </form>
+    }
+    
+    <div class="comments">
+        @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center">
+                            <span class="bi bi-person-circle me-2"></span>
+                            <strong>@comment.User.Username</strong>
+                        </div>
+                        <small class="text-muted">@comment.CreatedAt.ToString("MMMM dd, yyyy")</small>
+                    </div>
+                    <p class="card-text">@comment.Text</p>
+                    
+                    @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.Identity.Name == comment.User.Username))
+                    {
+                        <form action="/Comment/Delete/@comment.Id" method="post" class="text-end">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</article>

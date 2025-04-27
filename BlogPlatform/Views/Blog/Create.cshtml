@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Create Blog";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Создать блог</h2>
+                
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Название</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Содержимое</label>
+                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/Blog" class="btn btn-outline-secondary me-md-2">Отменить</a>
+                        <button type="submit" class="btn btn-primary">Опубликовать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

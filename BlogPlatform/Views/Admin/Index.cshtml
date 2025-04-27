@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<h2 class="mb-4">Панель админа</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Пользователи</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Имя</th>
+                                <th>Роль</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in ViewBag.Users)
+                            {
+                                <tr>
+                                    <td>@user.Username</td>
+                                    <td>@user.Role</td>
+                                    <td>
+                                        <form action="/Admin/DeleteUser/@user.Id" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Блоги</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Автор</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var blog in ViewBag.Blogs)
+                            {
+                                <tr>
+                                    <td>@blog.Title</td>
+                                    <td>@blog.User.Username</td>
+                                    <td>
+                                        <form action="/Admin/DeleteBlog/@blog.Id" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить этот блог?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

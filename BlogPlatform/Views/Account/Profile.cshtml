@@ -1,0 +1,54 @@
+@model User
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <span class="bi bi-person-circle" style="font-size: 5rem; color: var(--primary-color);"></span>
+                </div>
+                <h3>@Model.Username</h3>
+                <span class="badge bg-primary">@Model.Role</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Ваши блоги</h4>
+            </div>
+            <div class="card-body">
+                @if (Model.Blogs.Any())
+                {
+                    <div class="list-group">
+                        @foreach (var blog in Model.Blogs)
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5>@blog.Title</h5>
+                                        <small class="text-muted">@blog.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                    </div>
+                                    <div>
+                                        <a href="/Blog/Edit/@blog.Id" class="btn btn-sm btn-outline-secondary me-2">Редактировать</a>
+                                        <form action="/Blog/Delete/@blog.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>Вы еще не написали ни одного блога.</p>
+                    <a href="/Blog/Create" class="btn btn-primary">Создайте свой первый блог</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

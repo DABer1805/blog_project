@@ -1,0 +1,26 @@
+body {
+  padding-top: 60px;
+}
+
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.btn-like {
+  color: #0d6efd;
+}
+
+.btn-like:hover {
+  color: #0b5ed7;
+}
+
+.comment-box {
+  border-left: 3px solid #0d6efd;
+  padding-left: 15px;
+  margin-bottom: 15px;
+}
